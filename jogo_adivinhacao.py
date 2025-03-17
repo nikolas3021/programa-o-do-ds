@@ -1,53 +1,40 @@
-# Importa o módulo random, que contém funções para gerar números aleatórios
 import random
+def jogar_adivinhacao():
+    nivel = int(input("Escolha o nível de dificuldade (1- Fácil, 2- Médio, 3- Difícil): "))
+    max_numero = 10 if nivel == 1 else 50 if nivel == 2 else 100
+    numero_secreto = random.randint(1, max_numero)
+    tentativas = 10 if nivel == 1 else 5 if nivel == 2 else 3
+    pontos = 1000
 
-# Gera um número aleatório entre 1 e 10 e o armazena na variável `numero_secreto`
-numero_secreto = random.randint(1, 10)
+    print(f"Jogo de Adivinhação - Nível {nivel}")
+    print(f"Tente adivinhar o número que estou pensando, entre 1 e {max_numero}.")
 
-# Define variáveis para acompanhar o número de tentativas e o limite máximo de tentativas
-tentativas = 0
-max_tentativas = 5
+    for tentativa in range(1, tentativas + 1):
+        print(f"Tentativa {tentativa} de {tentativas}")
+        palpite = int(input("Digite seu palpite: "))
 
-# Exibe uma mensagem de boas-vindas ao jogador e explica as regras do jogo
-print("Bem-vindo ao jogo de adivinhação!")
-print("Tente adivinhar o número que estou pensando, entre 1 e 10.")
+        if palpite < 1 or palpite > max_numero:
+            print(f"Digite um número entre 1 e {max_numero}.")
+            continue
 
-# Inicia o loop principal do jogo. O loop continua enquanto o número de tentativas for menor que o limite.
-while tentativas < max_tentativas:
-    try:
-        # Solicita ao jogador que insira um número e tenta convertê-lo para inteiro
-        palpite = int(input("\nDigite seu palpite: "))
-        
-        # Verifica se o número inserido está dentro do intervalo permitido
-        if palpite < 1 or palpite > 10:
-            print("Por favor, insira um número entre 1 e 10.")
-            continue  # Retorna ao início do loop para que o jogador tente novamente
-    except ValueError:
-        # Captura erros caso o jogador insira algo que não seja um número inteiro
-        print("Entrada inválida! Por favor, insira um número inteiro.")
-        continue  # Retorna ao início do loop para nova entrada
+        acertou = palpite == numero_secreto
+        maior = palpite > numero_secreto
+        menor = palpite < numero_secreto
 
-    # Incrementa o número de tentativas feitas pelo jogador
-    tentativas += 1
+        if acertou:
+            print(f"Você acertou e fez {pontos} pontos!")
+            break
+        else:
+            pontos_perdidos = abs(numero_secreto - palpite)
+            pontos -= pontos_perdidos
+            if maior:
+                print("Seu palpite foi maior do que o número secreto.")
+            elif menor:
+                print("Seu palpite foi menor do que o número secreto.")
 
-    # Verifica se o palpite do jogador é igual ao número secreto
-    if palpite == numero_secreto:
-        print(f"🎉 Parabéns! Você acertou o número em {tentativas} tentativa(s).")
-        break  # Encerra o loop caso o jogador acerte o número
-    elif palpite < numero_secreto:
-        # Dá uma dica ao jogador para tentar um número maior
-        print("🔼 Quase lá! Tente um número maior.")
-    else:
-        # Dá uma dica ao jogador para tentar um número menor
-        print("🔽 Quase lá! Tente um número menor.")
+    if not acertou:
+        print(f"Suas tentativas acabaram. O número secreto era {numero_secreto}.")
+    print("Fim do jogo!")
 
-    # Informa ao jogador quantas tentativas ainda restam
-    if tentativas < max_tentativas:
-        print(f"Você tem {max_tentativas - tentativas} tentativa(s) restante(s).")
-    else:
-        print("\n😞 Infelizmente, suas tentativas acabaram.")
-
-# Mensagem final para quando o jogador não acerta o número secreto
-if palpite != numero_secreto:
-    print(f"O número secreto era {numero_secreto}.")
-print("🎮 Fim do jogo!")
+if __name__ == "__main__":
+    jogar_adivinhacao()

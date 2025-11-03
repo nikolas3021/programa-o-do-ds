@@ -78,6 +78,9 @@
       document.getElementById('exclusao').innerText =
         'Cliente excluído com sucesso!';
     }
+
+      db.run(`INSERT INTO Clientes (Id, Nome, Email) VALUES (2, 'Bruno', 'bruno@email.com');`);
+      db.run(`INSERT INTO Clientes (Id, Nome, Email) VALUES (3, 'Rose', 'rose@email.com');`);
   </script>
 </body>
 </html>
